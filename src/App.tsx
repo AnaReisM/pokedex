@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { Sidebar } from "./components/Sidebar";
+import { fetchTypes } from "./services/API";
 
 function App() {
+  const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetchTypes().then((types) => {
+      const typeNames = types.map((type) => type.name);
+      setPokemonTypes(typeNames);
+    });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Sidebar types={pokemonTypes} />
     </div>
   );
 }
